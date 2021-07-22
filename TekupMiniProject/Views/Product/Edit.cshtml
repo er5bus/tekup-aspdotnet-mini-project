@@ -1,0 +1,87 @@
+﻿@model TekupMiniProject.ViewModels.ProductPictureViewModel
+
+@{ ViewData["Title"] = "Edit"; }
+
+<style>
+    dt {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<h1>Edit</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit"  enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ProductId" class="control-label"></label>
+                <input asp-for="ProductId" class="form-control" />
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Reference" class="control-label"></label>
+                <input asp-for="Reference" class="form-control" />
+                <span asp-validation-for="Reference" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="custom-file">
+                <label class="file">
+                    <input type="file" asp-for="PicturesToBeUploaded" multiple aria-label="File browser example">
+                    <span class="file-custom"></span>
+                </label>
+                <span asp-validation-for="PicturesToBeUploaded" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row">
+    @if (Model != null && Model.Pictures != null)
+    {
+        foreach (var item in Model.Pictures)
+        {
+<div class="col-sm-4">
+    <dl>
+        <dt class="col-sm-12">
+            @Html.DisplayNameFor(model => item.Id) :
+            @Html.DisplayFor(model => item.Id)
+        </dt>
+        <dt class="col-sm-12">
+            @Html.DisplayNameFor(model => item.Name) :
+            @Html.DisplayFor(model => item.Name)
+        </dt>
+        <dt class="col-sm-12">
+            @Html.DisplayNameFor(model => item.Path) :
+            @Html.DisplayFor(model => item.Path)
+        </dt>
+    </dl>
+    <a href="@Url.Content("~/photography/"+item.Name)" data-toggle="lightbox" data-title="@Html.DisplayFor(model => item.Name)" data-gallery="gallery">
+        <img src="~/photography/@item.Name" asp-append-version="true" class="img-fluid mb-2" alt="@Html.DisplayFor(model => item.Path)">
+    </a>
+    <a href="@Url.Action("DeletePhoto","Picture",new { id=item.Id})" style="float:right">Delete</a>
+</div>}
+}
+
+</div>
+
+<div class="mt-5">
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

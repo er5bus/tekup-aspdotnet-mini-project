@@ -1,0 +1,73 @@
+﻿@model Product
+
+@{
+    ViewData["Title"] = "Details";
+}
+<style>
+    dt {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Reference)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reference)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+    </dl>
+</div>
+<div class="row">
+    @if (Model.Pictures != null)
+    {
+        foreach (var item in Model.Pictures)
+        {
+            <div class="col-sm-4">
+                <dl>
+                    <dt class="col-sm-12">
+                        @Html.DisplayNameFor(model => item.Id) :
+                        @Html.DisplayFor(model => item.Id)
+                    </dt>
+                    <dt class="col-sm-12">
+                        @Html.DisplayNameFor(model => item.Name) :
+                        @Html.DisplayFor(model => item.Name)
+                    </dt>
+                    <dt class="col-sm-12">
+                        @Html.DisplayNameFor(model => item.Path) :
+                        @Html.DisplayFor(model => item.Path)
+                    </dt>
+                </dl>
+                <a class="col-sm-12" href="@Url.Content("~/photography/"+item.Name)" data-toggle="lightbox" data-title="@Html.DisplayFor(model => item.Name)" data-gallery="gallery">
+                    <img src="~/photography/@item.Name" asp-append-version="true" class="img-fluid mb-2" alt="@Html.DisplayFor(model => item.Path)">
+                </a>
+            </div>
+        }
+    }
+
+</div>
+<div class="mt-5">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>
